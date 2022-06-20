@@ -10,16 +10,13 @@ const myMachine = createMachine(
     entry: "spawnLogMachine",
     on: {
       DO_SOMETHING: {
-        actions: [log("hello"), "logViaSpawnedMachine"]
+        actions: [log("Hello from myMachine"), "logViaSpawnedMachine"]
       }
     }
   },
   {
     actions: {
-      logViaSpawnedMachine: (ctx) => {
-        console.log(ctx.ref)
-        return send("LOG", { to: ctx.ref })
-      }
+      logViaSpawnedMachine: (ctx) => send("LOG", { to: ctx.ref })
     }
   }
 );
@@ -28,7 +25,7 @@ const logMachine = createMachine({
   id: "logMachine",
   on: {
     LOG: {
-      actions: log("hello from the log machine...")
+      actions: log("hello from logMachine...")
     }
   }
 });
@@ -47,8 +44,8 @@ export default function App() {
 
   return (
     <>
-      <button onClick={() => service.send("DO_SOMETHING")}>Click here</button>
-      <button onClick={() => send("LOG")}>Log directly</button>
+      <button onClick={() => service.send("DO_SOMETHING")}>Log through myMachine</button>
+      <button onClick={() => send("LOG")}>Log directly from the logMachine</button>
     </>
   );
 }
